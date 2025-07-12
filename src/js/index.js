@@ -28,4 +28,18 @@ const material = new THREE.MeshStandardMaterial({ color: 0x2E6FF2 })
 const box = new THREE.Mesh(geometry, material)
 scene.add(box);
 
-renderer.render(scene, camera);
+function animate() {
+  box.rotation.y += 0.01;
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  // 1. 카메라의 종횡비
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();  // 카메라 업데이트
+
+  // 2. 렌더러의 크기
+  renderer.setSize(window.innerWidth, window.innerHeight)
+})
