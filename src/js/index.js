@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import WebGL from '../../node_modules/three/examples/jsm/capabilities/WebGL.js'
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
 const $result = document.getElementById('result')
 
@@ -24,33 +24,34 @@ const light = new THREE.DirectionalLight(0xffffff)
 light.position.set(2, 4, 3)
 scene.add(light)
 
-const geometry = new THREE.DodecahedronGeometry(1);
+const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshStandardMaterial({
-  color: 0xffaaaa,
+  color: 0x2E6FF2,
 });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+const box = new THREE.Mesh(geometry, material);
+scene.add(box);
 
-// axesHelper
-const axesHelper = new THREE.AxesHelper(10);
-scene.add(axesHelper)
+// OrbitControls
+const controls = new OrbitControls(camera, renderer.domElement);
+// 조작 설정
+// controls.enableZoom = false;
+// controls.enableRotate = false;
+// controls.enablePan = false;
 
-// 1. 위치
-// Mesh.position.x = 2;
-// mesh.position.y = 1;
-mesh.position.set(0, 2, 1);
+controls.minDistance = 2
+controls.maxDistance = 10;
+// controls.maxPolarAngle = Math.PI / 3;
 
-// 2. 회전
-mesh.rotation.y = THREE.MathUtils.degToRad(30);
+controls.autoRotate = true;
+controls.autoRotateSpeed = -10;
 
-// 3. 크기
-mesh.scale.x = 1.2
-mesh.scale.z = 0.8
+controls.enableDamping = true;
 
 function animate() {
   // box.rotation.y += 0.01;
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
+  controls.update()
 }
 animate();
 
