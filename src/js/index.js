@@ -24,6 +24,40 @@ const light = new THREE.DirectionalLight(0xffffff)
 light.position.set(2, 4, 3)
 scene.add(light)
 
+const geometry = new THREE.BoxGeometry(1);
+// Material
+const basic = new THREE.MeshBasicMaterial({
+  color: 0xffaaaa,
+  // wireframe: true,
+  transparent: true,
+  opacity: 0.5
+});
+
+const standard = new THREE.MeshStandardMaterial({
+  color: 0xffaaaa,
+  roughness: 0.2,
+  metalness: 0.8,
+  // map: ,
+  side: THREE.FrontSide
+});
+
+const physical = new THREE.MeshPhysicalMaterial({
+  color: 0xffaaaa,
+  clearcoat: 0.8,
+  clearcoatRoughness: 0.2
+});
+
+const phong = new THREE.MeshPhongMaterial({
+  color: 0xffaaaa,
+  shininess: 100,
+  specular: 0x2e6ff2
+});
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), standard);
+const mesh = new THREE.Mesh(geometry, phong);
+scene.add(mesh);
+// scene.add(plane);
+
 // const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshStandardMaterial({ color: 0x2E6FF2 })
 // const box = new THREE.Mesh(geometry, material)  // Mesh: 3차원, geometry: 형태, material: 재질
@@ -62,7 +96,7 @@ const obj6 = new THREE.Mesh(geo6, material);
 // 원
 const geo7 = new THREE.TorusGeometry(1, 0.5);
 const obj7 = new THREE.Mesh(geo7, material);
-scene.add(obj7)
+// scene.add(obj7)
 
 function animate() {
   // box.rotation.y += 0.01;
