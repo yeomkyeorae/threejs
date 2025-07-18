@@ -19,6 +19,7 @@ camera.lookAt(0, 0, 0)
 // 3. Renderer: Scene+Camera, 화면을 그려주는 역할
 const renderer = new THREE.WebGLRenderer({ canvas: $result, antialias: true });
 renderer.setSize($result.clientWidth, $result.clientHeight);
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 // 도형
@@ -26,6 +27,7 @@ const geometry = new THREE.SphereGeometry(1);
 const material = new THREE.MeshStandardMaterial({ color: 0x2E6FF2 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
+cube.castShadow = true;
 
 const geometry2 = new THREE.PlaneGeometry(10, 10);
 const material2 = new THREE.MeshStandardMaterial({ color: 0x81a8f7, side: THREE.DoubleSide });
@@ -33,39 +35,20 @@ const plane = new THREE.Mesh(geometry2, material2);
 plane.rotation.x = Math.PI / -2;
 plane.position.y = -1;
 scene.add(plane);
+plane.receiveShadow = true;
 
-// ambientLight
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-// scene.add(ambientLight);
+// 그림자: 빛 - DirectionalLight, PointLight, SpotLight
+const dl = new THREE.DirectionalLight(0xffffff, 1);
+dl.position.set(0, 2, 2);
+scene.add(dl);
+dl.castShadow = true;
 
-// directionalLight
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(-2, 2, 0);
-// directionalLight.target.position.set(0, 2, 0);
-// scene.add(directionalLight);
+// 그림자 해상도
+dl.shadow.mapSize.width = 1024;
+dl.shadow.mapSize.height = 1024;
 
-const dlHelper = new THREE.DirectionalLightHelper(directionalLight, 1, 0xff00000);
-// scene.add(dlHelper);
-
-// pointLight
-const pointLight = new THREE.PointLight(0xff0000);
-pointLight.position.set(1, 1, 0);
-// scene.add(pointLight);
-
-const plHelper = new THREE.PointLightHelper(pointLight, 1, 0x00ff00);
-// scene.add(plHelper);
-
-// SpotLight
-const spotLight = new THREE.SpotLight(0xffffff, 1, 0, Math.PI / 6, 0.5);
-spotLight.position.y = 2;
-// scene.add(spotLight);
-
-const slHelper = new THREE.SpotLightHelper(spotLight, 0xff0000);
-// scene.add(slHelper);
-
-// Hemispere
-const hemispereLight = new THREE.HemisphereLight(0xffaaaa, 0x00ff00);
-scene.add(hemispereLight);
+// 그림자 블러
+dl.shadow.radius = 5;
 
 // 나무
 // const tree1 = printTree();
